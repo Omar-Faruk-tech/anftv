@@ -193,7 +193,7 @@ updateNews: (req, res) => {
   news
     .findByIdAndUpdate(filter, newsObj, {new: true}, (err, data) => {
       if(err) {
-        console.log(err)
+        // console.log(err);
         res.status(400)
            .send(err)
       } else {

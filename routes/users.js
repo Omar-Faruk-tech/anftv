@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const user = require('../models/users');
-const usersController = require('../controllers/users')
+const usersController = require('../controllers/users');
+const jwtAuth = require('../middleware/auth');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -9,22 +9,18 @@ router.get('/', function(req, res, next) {
 });
 
 // Create a new user 
-router.post('/create', usersController.userController.createUser);
+router.post('/create', jwtAuth.jwtAuth.verifyUser, usersController.userController.createUser);
 
 // get single user
-router.get('/:id', usersController.userController.getSingleUser);
+router.get('/:id', jwtAuth.jwtAuth.verifyUser,  usersController.userController.getSingleUser);
 
+// get all users
+router.post('/all', jwtAuth.jwtAuth.verifyUser,  usersController.userController.getAllUsers);
 
-router.post('/update', async(req, res) => {
-  const userObj = new user(req.body);
-    user.create(userObj)
-    .then((data) => {
-      res.status(200)
-         .send(data);
-    })
-    .catch((err) => {
-      res.status(400)
-         .send(err.message);
-    })
-});
+//update user record
+router.put('/update/:id', usersController.userController.updateUser);
+
+//user sign in
+router.post('/signin', usersController.userController.userLogin);
+
 module.exports = router;

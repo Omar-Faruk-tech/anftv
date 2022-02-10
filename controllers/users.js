@@ -40,5 +40,79 @@ exports.userController = {
       })
        
   },
+  getAllUsers: (req, res) => {
+    users 
+      .find()
+        .then((data) => {
+          res.status(200)
+             .send(data)
+        })
+        .catch((err) => {
+          res.status(400)
+             .send(err.message)
+        })
+  },
+  updateUser: async (req, res) => {
+    const userObj = req.body;
+    const filter = {
+      _id: req.params.id
+    };
+    userObj.password = bcrypt.hashSync(userObj.password, 10);
+    await users.init();
+      users.findByIdAndUpdate(filter, userObj, {new: true}, (err, updatedRecord) => {
+        if (err) {
+          res.status(400)
+             .send({
+               message: "Record could not be updated", 
+               err: err
+             })
+        } else {
+          res.status(200)
+             .send({
+               status: "Ok",
+               message: "User updated successfully",
+               updatedRecord})
+        }
+      }) 
+  },
+  userLogin: (req, res) => {
+    users
+      .findOne({userName: req.body.userName})
+        .then((userObj) => {
+          if(!userObj) {
+            return res.status(401)
+                      .send({
+                  message: "invalid username or password"
+                });
+          }
+      let isValidPassword = bcrypt.compareSync(req.body.password, userObj.password);
+      if(!isValidPassword) {
+      return res.status(401)
+                .send({
+            message: "Invalid username or password"
+          });
+        }
+        let payload = {
+          id: userObj._id, 
+          userName: userObj.userName,
+          email: userObj.email,
+          userType: userObj.userType
+      };
+      let token = jwt.sign(payload, process.env.secret, {expiresIn: 300000});
 
+      res.status(200)
+      .send({
+        status: "success",
+        message: "sign in successful", 
+        data: payload, 
+        accessToken: token});
+        })
+        .catch((err) => {
+          res.status(400)
+             .send({
+               error: err 
+              })
+              console.log(err);
+      })
+  }
 }
