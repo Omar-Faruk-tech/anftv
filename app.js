@@ -17,7 +17,7 @@ const { Console } = require('console');
 
 var app = express();
 
-mongoose.connect(process.env.MONGO_URL, { 
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/anf-tv-app', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 }, err => {
