@@ -153,6 +153,14 @@ getOne: (req, res) => {
   news
      .findOne({_id: req.params.id})
         .then((data) => {
+          if(!data) {
+            console.log(data);
+            res.status(404)
+               .send({
+               status: "failed",
+               message: "data not found"
+             })
+          }
           res.status(200)
              .send(data)
         })
@@ -192,10 +200,12 @@ updateNews: (req, res) => {
     newsObj.category = newsObj.category.charAt(0).toUpperCase() + newsObj.category.slice(1);
   news
     .findByIdAndUpdate(filter, newsObj, {new: true}, (err, data) => {
-      if(err) {
-        // console.log(err);
+      if(!data) {
         res.status(400)
-           .send(err)
+           .send({
+             status: "failed", 
+             message: "News not found"
+           })
       } else {
       res.status(200)
          .send({

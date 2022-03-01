@@ -32,7 +32,10 @@ exports.userController = {
       .findOne({_id: req.params.id}, (err, data) => {
         if (err) {
           res.status(400)
-             .send(err.message);
+             .send({
+              status: "failed", 
+              error: err.message
+            });
         } else {
           res.status(200)
             .send(data);
@@ -64,7 +67,7 @@ exports.userController = {
           res.status(400)
              .send({
                message: "Record could not be updated", 
-               err: err
+               error: err.message
              })
         } else {
           res.status(200)

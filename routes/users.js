@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 // Create a new user 
-router.post('/create', jwtAuth.jwtAuth.verifyUser, usersController.userController.createUser);
+router.post('/create', usersController.userController.createUser);
 
 // get single user
 router.get('/:id', jwtAuth.jwtAuth.verifyUser,  usersController.userController.getSingleUser);
