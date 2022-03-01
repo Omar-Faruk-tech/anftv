@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 //endpoint to create news
-router.post('/create', jwtAuth.jwtAuth.verifyUser, newsControllers.newsControllers.createNews);
+router.post('/create', newsControllers.newsControllers.createNews);
 
 //endpoint to fetch all news new - to - old
 router.get('/all', newsControllers.newsControllers.getAllNews);
@@ -21,9 +21,9 @@ router.get('/:categoryName/:id', newsControllers.newsControllers.getByCategory);
 router.get('/:id', newsControllers.newsControllers.getOne);
 
 //endpoint to delete a single news with its id
-router.delete('/delete/:id', jwtAuth.jwtAuth.verifyUser, newsControllers.newsControllers.deleteNews);
+router.delete('/delete/:id', newsControllers.newsControllers.deleteNews);
 
 //endpoint to update a single news with its id
-router.put('/update/:id', jwtAuth.jwtAuth.verifyUser, newsControllers.newsControllers.updateNews);
+router.put('/update/:id', newsControllers.newsControllers.updateNews);
 
 module.exports = router;

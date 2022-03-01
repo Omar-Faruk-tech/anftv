@@ -12,10 +12,10 @@ router.get('/', function(req, res, next) {
 router.post('/create', usersController.userController.createUser);
 
 // get single user
-router.get('/:id', jwtAuth.jwtAuth.verifyUser,  usersController.userController.getSingleUser);
+router.get('/:id', usersController.userController.getSingleUser);
 
 // get all users
-router.post('/all', jwtAuth.jwtAuth.verifyUser,  usersController.userController.getAllUsers);
+router.post('/all', usersController.userController.getAllUsers);
 
 //update user record
 router.put('/update/:id', usersController.userController.updateUser);
