@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const news = require('./models/news');
 require('dotenv').config();
+var cors = require('cors');
 
 // console.log('news required =>', news);
 // console.log('news from mongoose =>', mongoose.model('NewsModel'));
@@ -16,6 +17,8 @@ var newsRouter = require('./routes/news');
 const { Console } = require('console');
 
 var app = express();
+
+app.use(cors());
 
 mongoose.connect(process.env.MONGO_URL, { 
   useNewUrlParser: true, 
